@@ -3,3 +3,19 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  p This is Lohitha vodnala
+  button(type="button", class="btn btn-primary") Press on me
+  button Sample Button
+  div(id='faster') add in extra
+ 
+
+  script.
+  var value = 1;
+  var amt = 2;
+  
+  function faster() {
+    amt = amt * 2;  // Doubles amt
+    value += amt;  // Adds amt to value
+    document.getElementById("faster").innerText = `Faster ${value} times ${amt}`;  
+    
+
