@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 Search Results - Obstacles
+  div.container-fluid
+    div.row
+      - let results = [
+          { obstacle_name: "Rock", difficulty_level: "Hard", height: 20 },
+          { obstacle_name: "Mud Pit", difficulty_level: "Medium", height: 10 },
+          { obstacle_name: "Wall", difficulty_level: "Easy", height: 15 }
+        ]
+      each item in results
+        div.col-sm-2
+          h3 #{item.obstacle_name}
+          p Difficulty: #{item.difficulty_level}
+          p Height: #{item.height} meters
+
+    
+
