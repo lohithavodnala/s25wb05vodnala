@@ -6,19 +6,25 @@ block content
 
   .container-fluid
     .row
-      each expedition in expeditions
+      each expedition, index in expeditions
         .col-sm-4
           .card
-            .card-body
+            .card-body(data-index=index style="cursor:pointer;")
               h5 Expedition Location: #{expedition.location}
               p Species Spotted: #{expedition.species_spotted}
               p Duration: #{expedition.duration_days} days
-br
-script.
-    function buy(index) {
-      alert('You purchased item ' + index);
-    }             
+              button.btn.btn-primary Buy
 
-  
+  br
+  script.
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll(".card-body").forEach(card => {
+        card.addEventListener("click", function() {
+          let index = this.getAttribute("data-index");
+          alert(`You purchased item ${index}`);
+        });
+      });
+    });
+
 
 
