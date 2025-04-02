@@ -21,10 +21,10 @@ block content
   - else
     //- Construct table
     table(style="margin: 30px;")#outer
-      - for (let i = 0; i < rows; i++) // i should iterate exactly 'rows' times
+      - for (let i = 0; i < rows; i++)
         tr#middle
-          - for (let j = 0; j < cols; j++) // j iterates for 'cols' times
-            td(style="padding: 10px;")= i - j
+          - for (let j = 0; j < cols; j++)
+            td(style="padding: 10px;")= Math.min(i + 1, j + 1)
 
     
 
