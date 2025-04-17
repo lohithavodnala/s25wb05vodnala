@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+  - let expeditionsid = toShow._id
+  - let expeditions_type = toShow.expeditions_type
+  - let cost = toShow.cost
+  - let size = toShow.size
+
+  div
+    div.row
+      div(class='expeditionsAttr mr-3') expeditions ID is:
+      div #{expeditionsid}
+    div.row
+      div(class='expeditionsAttr mr-3') expeditions Type is:
+      div #{expeditions_type}
+    div.row
+      div(class='expeditionsAttr mr-3') expeditions Size is:
+      div #{size}
+    div.row
+      div(class='expeditionsAttr mr-3') expeditions Cost is:
+      div #{cost}
