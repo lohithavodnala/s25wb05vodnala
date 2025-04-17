@@ -70,10 +70,10 @@ ${JSON.stringify(req.body)}`)
     try {
         let toUpdate = await ornithology.findById(req.params.id)
         // Do updates of properties
-        if (req.body.ornithology_type)
-            toUpdate.ornithology_type = req.body.ornithology_type;
-        if (req.body.cost) toUpdate.cost = req.body.cost;
-        if (req.body.size) toUpdate.size = req.body.size;
+        if (req.body.ornithology_location)
+            toUpdate.ornithology_location = req.body.ornithology_location;
+        if (req.body.species_spotted) toUpdate.species_spotted = req.body.species_spotted;
+        if (req.body.duration_days) toUpdate.duration_days = req.body.duration_days;
         let result = await toUpdate.save();
         console.log("Sucess " + result)
         res.send(result)
