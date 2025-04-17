@@ -2,20 +2,20 @@ extends layout
 
 block content
   h1= title
-  form(id='expeditionsForm', action="/resource/expeditions", method="POST")
+  form(id='ornithologyForm', action="/resource/ornithology", method="POST")
     div.form-group
-      label.expeditionsAttr(for='expeditions_type') expeditions type
-      input#expeditions_type(type='text', name='expeditions_type')
+      label.ornithologyAttr(for='ornithology_type') ornithology type
+      input#ornithology_type(type='text', name='ornithology_type')
     div.form-group
-      label.expeditionsAttr(for='size') expeditions size
+      label.ornithologyAttr(for='size') ornithology size
       input#size(type='text', name='size')
     div.form-group
-      label.expeditionsAttr(for='cost') expeditions cost
+      label.ornithologyAttr(for='cost') ornithology cost
       input#cost(type='number', name='cost')
     input(type="submit")
 
   script.
-    document.forms['expeditionsForm'].addEventListener('submit', (event) => {
+    document.forms['ornithologyForm'].addEventListener('submit', (event) => {
       event.preventDefault();
       // TODO do something here to show user that form is being submitted
       fetch(event.target.action, {
@@ -31,4 +31,5 @@ block content
         alert("Save failed " + error )
       });
     });
+
 

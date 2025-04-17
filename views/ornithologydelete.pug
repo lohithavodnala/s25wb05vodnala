@@ -5,25 +5,25 @@ block content
   if (toShow == null)
     h2 No instance to delete
   else
-    - let expeditionsid = toShow._id
-    - let expeditions_type = toShow.expeditions_type
+    - let ornithologyid = toShow._id
+    - let ornithology_type = toShow.ornithology_type
     - let cost = toShow.cost
     - let size = toShow.size
-    - let actionid = "/resource/expeditions/" + expeditionsid
+    - let actionid = "/resource/ornithology/" + ornithologyid
     script let actionid = "#{actionid}"
 
     div
       div.row
-        div(class='expeditionsAttr mr-3') expeditions ID is:
-        div #{expeditionsid}
+        div(class='ornithologyAttr mr-3') Ornithology ID is:
+        div #{ornithologyid}
       div.row
-        div(class='expeditionsAttr mr-3') expeditions Type is:
-        div #{expeditions_type}
+        div(class='ornithologyAttr mr-3') Ornithology Type is:
+        div #{ornithology_type}
       div.row
-        div(class='expeditionsAttr mr-3') expeditions Size is:
+        div(class='ornithologyAttr mr-3') Ornithology Size is:
         div #{size}
       div.row
-        div(class='expeditionsAttr mr-3') expeditions Cost is:
+        div(class='ornithologyAttr mr-3') Ornithology Cost is:
         div #{cost}
 
     button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
@@ -31,8 +31,8 @@ block content
 
   script.
     function cancel() {
-      // Go back to the home page for the expeditions collection
-      window.location.href='/expeditionss'
+      // Go back to the home page for the ornithology collection
+      window.location.href='/ornithologys'
     }
 
   script.
@@ -45,7 +45,7 @@ block content
         return resp.json(); // or resp.text() or whatever the server sends
       }).then((body) => {
         alert("Delete succeded")
-        window.location.href='/expeditionss'
+        window.location.href='/ornithologys'
         // TODO handle body
       }).catch((error) => {
         // TODO handle error
