@@ -3,24 +3,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 require('dotenv').config();
 const mongoose = require('mongoose');
+const Ornithology = require("./models/ornithology"); // Correct model import
 
-// Check if MONGO_CON is set
 const connectionString = process.env.MONGO_CON;
-if (!connectionString) {
-  console.error("MongoDB connection string (MONGO_CON) not set in environment variables.");
-  process.exit(1); // Exit the process if the connection string is missing
-}
 
-mongoose.connect(connectionString, { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true, 
-  serverSelectionTimeoutMS: 30000 // Timeout set to 30 seconds
+// Mongoose connection with options
+mongoose.connect(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 })
-  .then(() => console.log("Connection to DB succeeded"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => {
+    console.log("Connected to MongoDB Atlas successfully!");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
+// Setup routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var ornithologyRouter = require('./routes/ornithology');
@@ -56,48 +58,45 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   res.status(err.status || 500);
   res.render('error');
 });
 
-//Get the default connection
-var db = mongoose.connection;
-//Bind connection to error event
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-// Seeding the database if needed
+// Database seeding function
 async function recreateDB() {
   try {
-    // Delete all existing data
-    await ornithology.deleteMany();
+    await Ornithology.deleteMany();  // Delete everything in the collection
 
-    // Seed new data
-    let instance1 = new ornithology({
-      ornithology_location: "ghost", species_spotted: 'Medium', duration_days: 16
+    let instance1 = new Ornithology({
+      ornithology_location: "ghost", 
+      species_spotted: 'Medium', 
+      duration_days: 16
     });
     await instance1.save();
-    console.log("First object saved");
 
-    let instance2 = new ornithology({
-      ornithology_location: "ghost", species_spotted: 'Small', duration_days: 18
+    let instance2 = new Ornithology({
+      ornithology_location: "ghost", 
+      species_spotted: 'Small', 
+      duration_days: 18
     });
     await instance2.save();
-    console.log("Second object saved");
 
-    let instance3 = new ornithology({
-      ornithology_location: "Bird", species_spotted: 'Medium', duration_days: 15
+    let instance3 = new Ornithology({
+      ornithology_location: "Bird", 
+      species_spotted: 'Medium', 
+      duration_days: 15
     });
     await instance3.save();
-    console.log("Third object saved");
 
+    console.log("Database seeded successfully");
   } catch (err) {
     console.error("Error seeding database:", err);
   }
 }
 
-// Optionally reseed the database if needed
 let reseed = true;
-if (reseed) { recreateDB(); }
+if (reseed) {
+  recreateDB();
+}
 
 module.exports = app;
