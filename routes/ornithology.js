@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const ornithology_controller = require('../controllers/ornithologyController');
+const ornithology_controller = require("../controllers/ornithology");
+
 
 console.log("TYPE:", typeof ornithology_controller.ornithology_list); // Debug line
 

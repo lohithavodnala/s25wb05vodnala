@@ -1,12 +1,13 @@
-const Ornithology = require("../models/ornithology"); // ✅ Must match file name and exported model
+// controllers/ornithologyController.js
 
+const Ornithology = require("../models/ornithology");
 
-// GET all expeditions (for Pug view)
-exports.ornithology_list = async function(req, res) {
+// GET all expeditions (Pug view)
+exports.ornithology_list = async function (req, res) {
   try {
     const ornithology = await Ornithology.find();
     res.render("ornithology", {
-      title: "Search Results - Ornithology ",
+      title: "Search Results - Ornithology",
       ornithology
     });
   } catch (err) {
@@ -14,8 +15,8 @@ exports.ornithology_list = async function(req, res) {
   }
 };
 
-//GET one expedition by ID (API endpoint - returns JSON)
-exports.ornithology_detail = async function(req, res) {
+// GET one expedition by ID (API - JSON)
+exports.ornithology_detail = async function (req, res) {
   try {
     const result = await Ornithology.findById(req.params.id);
     res.send(result);
@@ -25,22 +26,22 @@ exports.ornithology_detail = async function(req, res) {
 };
 
 // POST a new expedition
-exports.ornithology_create_post = async function(req, res) {
+exports.ornithology_create_post = async function (req, res) {
   const expedition = new Ornithology({
     location: req.body.location,
     species_spotted: req.body.species_spotted,
     duration_days: req.body.duration_days
   });
   try {
-    const result = await ornithology.save();
+    const result = await expedition.save(); // ✅ fixed variable name
     res.send(result);
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
 };
 
-// PUT (update) an ornithology
-exports.ornithology_update_put = async function(req, res) {
+// PUT (update)
+exports.ornithology_update_put = async function (req, res) {
   try {
     let toUpdate = await Ornithology.findById(req.params.id);
     if (req.body.location) toUpdate.location = req.body.location;
@@ -53,8 +54,8 @@ exports.ornithology_update_put = async function(req, res) {
   }
 };
 
-// DELETE an expedition
-exports.ornithology_delete = async function(req, res) {
+// DELETE
+exports.ornithology_delete = async function (req, res) {
   try {
     const result = await Ornithology.findByIdAndDelete(req.params.id);
     res.send(result);
@@ -63,63 +64,48 @@ exports.ornithology_delete = async function(req, res) {
   }
 };
 
-// ✅ GET one expedition by ID and render Pug view
-exports.ornithology_view_one_Page = async function(req, res) {
+// VIEW single expedition (Pug)
+exports.ornithology_view_one_Page = async function (req, res) {
   try {
     const result = await Ornithology.findById(req.query.id);
-    res.render('ornithologydetail', { title: 'Ornithology Detail', toShow: result });
+    res.render("ornithologydetail", { title: "Ornithology Detail", toShow: result });
   } catch (err) {
-    res.status(500);
-    res.send(`{'error': '${err}'}`);
+    res.status(500).send(`{'error': '${err}'}`);
   }
 };
 
-// Controller function to render the create page
-exports.ornithology_create_Page = function(req, res) {
-    console.log("create view");
-    try {
-      res.render('ornithologycreate', { title: 'Create Ornithology' });
-    } catch (err) {
-      res.status(500);
-      res.send(`{'error': '${err}'}`);
-    }
-  };
+// VIEW create page
+exports.ornithology_create_Page = function (req, res) {
+  try {
+    res.render("ornithologycreate", { title: "Create Ornithology" });
+  } catch (err) {
+    res.status(500).send(`{'error': '${err}'}`);
+  }
+};
 
-  exports.ornithology_update_Page = async function(req, res) {
-    console.log("update view for item " + req.query.id);
-    try {
-      const result = await Ornithology.findById(req.query.id);
-      res.render('ornithologyupdate', { title: 'Update Ornithology', toShow: result });
-    } catch (err) {
-      res.status(500);
-      res.send(`{'error': '${err}'}`);
+// VIEW update page
+exports.ornithology_update_Page = async function (req, res) {
+  try {
+    const result = await Ornithology.findById(req.query.id);
+    if (!result) {
+      res.status(404).send("No ornithology found for updating.");
+      return;
     }
-  };
+    res.render("ornithologyupdate", { title: "Update Ornithology", toShow: result });
+  } catch (err) {
+    res.status(500).send(`{'error': '${err}'}`);
+  }
+};
 
-  exports.ornithology_delete_Page = async function(req, res) {
-    console.log("Delete view for id " + req.query.id);
-    try {
-      const result = await Ornithology.findById(req.query.id);
-      res.render('ornithologydelete', {
-        title: 'Delete ornithology',
-        toShow: result
-      }); // ✅ CORRECT: ornithologydelete
-    } catch (err) {
-      res.status(500);
-      res.send(`{'error': '${err}'}`);
-    }
-  };
-    
-  exports.ornithology_update_Page = async function(req, res) {
-    try {
-      const result = await Ornithology.findById(req.query.id);
-      if (!result) {
-        res.status(404).send("No ornithology found for updating.");
-        return;
-      }
-      res.render('ornithologyupdate', { title: 'Update ornithology', toShow: result });
-    } catch (err) {
-      res.status(500).send(`{'error': '${err}'}`);
-    }
-  };
-  
+// VIEW delete page
+exports.ornithology_delete_Page = async function (req, res) {
+  try {
+    const result = await Ornithology.findById(req.query.id);
+    res.render("ornithologydelete", {
+      title: "Delete Ornithology",
+      toShow: result
+    });
+  } catch (err) {
+    res.status(500).send(`{'error': '${err}'}`);
+  }
+};
