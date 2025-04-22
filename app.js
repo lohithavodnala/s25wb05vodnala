@@ -1,47 +1,49 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 require('dotenv').config();
+
 const mongoose = require('mongoose');
-const Ornithology = require("./models/ornithology"); // Correct model import
+const Ornithology = require("./models/ornithology");
 
 const connectionString = process.env.MONGO_CON;
 
-// Mongoose connection with options
-mongoose.connect(connectionString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+// Mongoose connection
+mongoose.connect(connectionString)
   .then(() => {
-    console.log("Connected to MongoDB Atlas successfully!");
+    console.log("✅ Connected to MongoDB Atlas successfully!");
+    if (reseed) {
+      recreateDB();
+    }
   })
   .catch((err) => {
-    console.error("MongoDB connection error:", err);
+    console.error("❌ MongoDB connection error:", err);
   });
 
-// Setup routes
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var ornithologyRouter = require('./routes/ornithology');
-var gridRouter = require('./routes/grid');
-var pickRouter = require('./routes/pick');
-var resourceRouter = require("./routes/resource");
+// Express app setup
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const ornithologyRouter = require('./routes/ornithology');
+const gridRouter = require('./routes/grid');
+const pickRouter = require('./routes/pick');
+const resourceRouter = require('./routes/resource');
 
-var app = express();
+const app = express();
 
-// view engine setup
+// View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/ornithology', ornithologyRouter);
@@ -49,12 +51,12 @@ app.use('/grid', gridRouter);
 app.use('/pick', pickRouter);
 app.use('/resource', resourceRouter);
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Error handler
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -65,38 +67,21 @@ app.use(function (err, req, res, next) {
 // Database seeding function
 async function recreateDB() {
   try {
-    await Ornithology.deleteMany();  // Delete everything in the collection
+    await Ornithology.deleteMany(); // Delete all documents
 
-    let instance1 = new Ornithology({
-      ornithology_location: "ghost", 
-      species_spotted: 'Medium', 
-      duration_days: 16
-    });
-    await instance1.save();
+    const seedData = [
+      { ornithology_location: "ghost", species_spotted: "Medium", duration_days: 16 },
+      { ornithology_location: "ghost", species_spotted: "Small", duration_days: 18 },
+      { ornithology_location: "Bird", species_spotted: "Medium", duration_days: 15 }
+    ];
 
-    let instance2 = new Ornithology({
-      ornithology_location: "ghost", 
-      species_spotted: 'Small', 
-      duration_days: 18
-    });
-    await instance2.save();
-
-    let instance3 = new Ornithology({
-      ornithology_location: "Bird", 
-      species_spotted: 'Medium', 
-      duration_days: 15
-    });
-    await instance3.save();
-
-    console.log("Database seeded successfully");
+    await Ornithology.insertMany(seedData);
+    console.log("✅ Database seeded successfully.");
   } catch (err) {
-    console.error("Error seeding database:", err);
+    console.error("❌ Error seeding database:", err);
   }
 }
 
-let reseed = true;
-if (reseed) {
-  recreateDB();
-}
+const reseed = process.env.NODE_ENV === 'development';  // Only reseed in development mode
 
 module.exports = app;

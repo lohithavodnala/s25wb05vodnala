@@ -1,44 +1,35 @@
 extends layout
- 
+
 block content
   h1= title
-    br
-    a.btn.btn-primary(href="/ornithologye/create") Create expeditions
-    br
-    - let items = results;
-      //- var results = [
-      //-   { name: "Everest Base Camp", destination: "Nepal", duration: 14 },
-      //-   { name: "Amazon Rainforest", destination: "Brazil", duration: 10 },
-      //-   { name: "Antarctic Voyage", destination: "Antarctica", duration: 21 }
-      //- ];
- 
+  br
+  a.btn.btn-primary(href="/ornithology/create") Create expeditions
+  br
   div(class="container-fluid")
     div(class="row m-1")
       each item in items
-        - let destination = `dispatch(\"/ornithology/update?id=${item._id}\")`
+        - let destination = "/ornithology/update?id=" + item._id
         div(class="row-sm-2", class="m-1")
-          | Item #{item.location}(#{item.species_spotted}) is #{item.duration_days}
-          button.btn(class="btn-primary ml-1", onclick= destination) Update
+          | Item #{item.ornithology_location}(#{item.species_spotted}) is #{item.duration_days}
+          button.btn(class="btn-primary ml-1", onclick= dispatch(destination)) Update
           .col-sm-4
             h3 #{item.duration_days}
-            p Destination: #{item.species_spotted}
-            p Duration: #{item.location} days
+            p Location: #{item.ornithology_location}
+            p Species: #{item.species_spotted}
+            p Duration: #{item.duration_days} days
             div(class="buy-button", onclick=`buy(${index})`) Purchase
-            button.btn(class="btn-primary ml-1", onclick= destination) Update
-            button.btn.btn-success.ml-1(onclick=destinationdetail) Detail
-            button.btn.btn-warning.ml-1(onclick=destinationdelete) Delete
+            button.btn(class="btn-primary ml-1", onclick= dispatch(destination)) Update
+            button.btn.btn-success.ml-1(onclick= dispatch("/ornithology/detail?id=" + item._id)) Detail
+            button.btn.btn-warning.ml-1(onclick= dispatch("/ornithology/delete?id=" + item._id)) Delete
             br
- 
   br
   a(href='/') Go Back to Home
- 
+
   script.
     function buy(index) {
       alert('You purchased item ' + index);
     }
- 
-  script.
+
     function dispatch(path){
       window.location.href=path
     }
- 
