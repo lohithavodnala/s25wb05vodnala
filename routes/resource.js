@@ -2,21 +2,22 @@ var express = require('express');
 var router = express.Router();
 // Require controller modules.
 var api_controller = require('../controllers/api');
-var expeditions_controller = require('../controllers/expeditions');
+var ornithology_controller = require('../controllers/ornithology');
 /// API ROUTE ///
 // GET resources base.
+var api_controller = require('../controllers/api');
 router.get('/', api_controller.api);
 /// COSTUME ROUTES ///
 // POST request for creating a Costume.
-router.post('/expeditions', expeditions_controller.expeditions_create_post);
+router.post('/ornithology', ornithology_controller.ornithology_create_post);
 // DELETE request to delete Costume.
-router.delete('/expeditions/:id', expeditions_controller.expeditions_delete);
+router.delete('/ornithology/:id', ornithology_controller.ornithology_delete);
 // PUT request to update Costume.
-router.put('/expeditions/:id', expeditions_controller.expeditions_update_put);
+router.put('/ornithology/:id', ornithology_controller.ornithology_update_put);
 // GET request for one Costume.
-router.get('/expeditions/:id', expeditions_controller.expeditions_detail);
+router.get('/ornithology/:id', ornithology_controller.ornithology_detail);
 // GET request for list of all Costume items.
-router.get('/expeditions', expeditions_controller.expeditions_list);
+router.get('/ornithology', ornithology_controller.ornithology_list);
 module.exports = router;
 
 

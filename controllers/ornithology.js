@@ -4,10 +4,10 @@ const Ornithology = require("../models/ornithology"); // ✅ Must match file nam
 // GET all expeditions (for Pug view)
 exports.ornithology_list = async function(req, res) {
   try {
-    const expeditions = await Ornithology.find();
+    const ornithology = await Ornithology.find();
     res.render("ornithology", {
       title: "Search Results - Ornithology ",
-      expeditions
+      ornithology
     });
   } catch (err) {
     res.status(500).send({ error: err });
@@ -32,7 +32,7 @@ exports.ornithology_create_post = async function(req, res) {
     duration_days: req.body.duration_days
   });
   try {
-    const result = await expedition.save();
+    const result = await ornithology.save();
     res.send(result);
   } catch (err) {
     res.status(500).send({ error: err.message });
