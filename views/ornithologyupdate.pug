@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  h1= title
+
+  - let expeditionId = toShow._id
+  - let location = toShow.location
+  - let species = toShow.species_spotted
+  - let duration = toShow.duration_days
+  - let actionid = "/ornithology/api/" + expeditionId
+
+  div.row(class='mb-2')
+    div.mr-1 Expedition ID:
+    div #{expeditionId}
+
+  form(id='OrnithologyForm', action=actionid, method="POST")  // Form method irrelevant due to JS
+    div.form-group
+      label.ornithologyAttr(for='location') Location
+      input#location(type='text', name='location', value=location)
+
+    div.form-group
+      label.ornithologyAttr(for='species_spotted') Species Spotted
+      input#species_spotted(type='text', name='species_spotted', value=species)
+
+    div.form-group
+      label.ornithologyAttr(for='duration_days') Duration (Days)
+      input#duration_days(type='number', name='duration_days', value=duration)
+
+    input.btn.btn-primary(type="submit", value="Update")
+
+  script.
+    document.forms['OrnithologyForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        return resp.json();
+      }).then((body) => {
+        alert("Update succeeded");
+        console.log(body);
+      }).catch((error) => {
+        alert("Update failed: " + error);
+      });
+    });

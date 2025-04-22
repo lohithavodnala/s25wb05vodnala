@@ -1,14 +1,19 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const ornithology_controller = require('../controllers/ornithologyController');
 
-/* GET ornithology expeditions listing. */
-router.get('/', function(req, res, next) {
-  let expeditions = [
-    { location: "Amazon Rainforest", species_spotted: "Harpy Eagle", duration_days: 10 },
-    { location: "Himalayan Foothills", species_spotted: "Himalayan Monal", duration_days: 7 },
-    { location: "Sundarbans Mangrove", species_spotted: "Masked Finfoot", duration_days: 5 }
-  ];
-  res.render('ornithology', { title: "Search Results - Ornithology Expeditions", expeditions });
-});
+console.log("TYPE:", typeof ornithology_controller.ornithology_list); // Debug line
 
-module.exports = router;
+router.get('/', ornithology_controller.ornithology_list); // This line must point to a valid function
+
+// Additional routes
+router.get('/api/:id', ornithology_controller.ornithology_detail);
+router.post('/api', ornithology_controller.ornithology_create_post);
+router.put('/api/:id', ornithology_controller.ornithology_update_put);
+router.delete('/api/:id', ornithology_controller.ornithology_delete);
+router.get('/detail', ornithology_controller.ornithology_view_one_Page);
+router.get('/create', ornithology_controller.ornithology_create_Page);
+router.get('/update', ornithology_controller.ornithology_update_Page);
+router.get('/delete', ornithology_controller.ornithology_delete_Page);
+
+module.exports = router;

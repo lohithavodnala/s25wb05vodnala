@@ -1,0 +1,72 @@
+//- extends layout
+
+//- block content
+//-   h1= title
+
+//-   form(id='OrnithologyForm', action="/ornithology/api", method="POST")
+//-     div.form-group
+//-       label.ornithologyAttr(for='location') Location
+//-       input#location(type='text', name='location', required=true)
+
+//-     div.form-group
+//-       label.ornithologyAttr(for='species_spotted') Species Spotted
+//-       input#species_spotted(type='text', name='species_spotted', required=true)
+
+//-     div.form-group
+//-       label.ornithologyAttr(for='duration_days') Duration (Days)
+//-       input#duration_days(type='number', name='duration_days', required=true, min='1')
+
+//-     input.btn.btn-primary(type="submit", value="Submit")
+
+//-   script.
+//-     document.forms['OrnithologyForm'].addEventListener('submit', (event) => {
+//-       event.preventDefault();
+//-       fetch(event.target.action, {
+//-         method: 'POST',
+//-         body: new URLSearchParams(new FormData(event.target))
+//-       }).then((resp) => {
+//-         return resp.json();
+//-       }).then((body) => {
+//-         alert("Save succeeded");
+//-         console.log(body);
+//-       }).catch((error) => {
+//-         alert("Save failed: " + error);
+//-       });
+//-     });
+extends layout
+
+block content
+  h1.text-center.mb-4.text-primary= title
+
+  .container
+    .card.shadow.p-4
+      form#OrnithologyForm(action="/ornithology/api", method="POST")
+        .form-group
+          label.ornithologyAttr(for='location') Location
+          input.form-control(type='text', id='location', name='location', required)
+
+        .form-group
+          label.ornithologyAttr(for='species_spotted') Species Spotted
+          input.form-control(type='text', id='species_spotted', name='species_spotted', required)
+
+        .form-group
+          label.ornithologyAttr(for='duration_days') Duration (Days)
+          input.form-control(type='number', id='duration_days', name='duration_days', required, min='1')
+
+        input.btn.btn-primary.mt-3(type="submit", value="Submit")
+
+  script.
+    document.forms['OrnithologyForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        return resp.json();
+      }).then((body) => {
+        alert("Save succeeded");
+        console.log(body);
+      }).catch((error) => {
+        alert("Save failed: " + error);
+      });
+    });

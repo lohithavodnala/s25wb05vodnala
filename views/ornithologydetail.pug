@@ -1,0 +1,58 @@
+extends layout
+
+block content
+  h1.text-center.mb-4.text-danger= title
+
+  if (toShow == null)
+    h2.text-center.text-muted No expedition found to delete
+  else
+    - let expeditionId = toShow._id
+    - let location = toShow.location
+    - let species = toShow.species_spotted
+    - let duration = toShow.duration_days
+    - let actionid = "/ornithology/api/" + expeditionId
+    script let actionid = "#{actionid}"
+
+    .container
+      .card.shadow.p-4
+        h4.text-secondary.mb-3 Expedition Details
+
+        .row.mb-2
+          strong.col-sm-3 Expedition ID:
+          span.col-sm-9= expeditionId
+
+        .row.mb-2
+          strong.col-sm-3 Location:
+          span.col-sm-9= location
+
+        .row.mb-2
+          strong.col-sm-3 Species Spotted:
+          span.col-sm-9= species
+
+        .row.mb-2
+          strong.col-sm-3 Duration (Days):
+          span.col-sm-9= duration
+
+        .text-center.mt-4
+          button.btn.btn-danger.m-2(onclick="deleteOnid()") Delete
+          button.btn.btn-secondary.m-2(onclick="cancel()") Cancel
+
+  script.
+    function cancel() {
+      window.location.href = '/ornithology';
+    }
+
+  script.
+    function deleteOnid() {
+      console.log("starting delete");
+      fetch(actionid, {
+        method: 'DELETE'
+      }).then((resp) => {
+        return resp.json();
+      }).then((body) => {
+        alert("Delete succeeded");
+        window.location.href = '/ornithology';
+      }).catch((error) => {
+        alert("Delete failed: " + error);
+      });
+    }

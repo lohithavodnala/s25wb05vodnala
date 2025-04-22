@@ -1,30 +1,44 @@
 extends layout
-
+ 
 block content
   h1= title
-  p List of ornithology expeditions and notable birds observed.
-
-  .container-fluid
-    .row
-      each expedition, index in expeditions
-        .col-sm-4
-          .card
-            .card-body(data-index=index style="cursor:pointer;")
-              h5 Expedition Location: #{expedition.location}
-              p Species Spotted: #{expedition.species_spotted}
-              p Duration: #{expedition.duration_days} days
-              button.btn.btn-primary Buy
-
+    br
+    a.btn.btn-primary(href="/ornithologye/create") Create expeditions
+    br
+    - let items = results;
+      //- var results = [
+      //-   { name: "Everest Base Camp", destination: "Nepal", duration: 14 },
+      //-   { name: "Amazon Rainforest", destination: "Brazil", duration: 10 },
+      //-   { name: "Antarctic Voyage", destination: "Antarctica", duration: 21 }
+      //- ];
+ 
+  div(class="container-fluid")
+    div(class="row m-1")
+      each item in items
+        - let destination = `dispatch(\"/ornithology/update?id=${item._id}\")`
+        div(class="row-sm-2", class="m-1")
+          | Item #{item.location}(#{item.species_spotted}) is #{item.duration_days}
+          button.btn(class="btn-primary ml-1", onclick= destination) Update
+          .col-sm-4
+            h3 #{item.duration_days}
+            p Destination: #{item.species_spotted}
+            p Duration: #{item.location} days
+            div(class="buy-button", onclick=`buy(${index})`) Purchase
+            button.btn(class="btn-primary ml-1", onclick= destination) Update
+            button.btn.btn-success.ml-1(onclick=destinationdetail) Detail
+            button.btn.btn-warning.ml-1(onclick=destinationdelete) Delete
+            br
+ 
   br
+  a(href='/') Go Back to Home
+ 
   script.
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll(".card-body").forEach(card => {
-        card.addEventListener("click", function() {
-          let index = this.getAttribute("data-index");
-          alert(`You purchased item ${index}`);
-        });
-      });
-    });
-
-
-
+    function buy(index) {
+      alert('You purchased item ' + index);
+    }
+ 
+  script.
+    function dispatch(path){
+      window.location.href=path
+    }
+ 

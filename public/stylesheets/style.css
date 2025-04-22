@@ -1,8 +1,157 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 16px "Segoe UI", Helvetica, Arial, sans-serif;
+  background-color: #f7f9fb;
+  color: #333;
+}
+
+h1, h4 {
+  font-weight: 600;
 }
 
 a {
-  color: #00B7FF;
+  color: #007bff;
+  text-decoration: none;
+}
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* For attribute labels */
+.ornithologyAttr {
+  background-color: #e0f7fa;
+  padding: 6px 12px;
+  font-weight: bold;
+  color: #006064;
+  width: fit-content;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
+/* Card view enhancements */
+.card {
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-sm {
+  min-width: 70px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Buttons custom styles */
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  border: none;
+}
+.btn-info:hover {
+  background-color: #138496;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+  color: black;
+}
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Form group spacing */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+}
+
+.ornithologyAttr {
+  font-weight: 500;
+  color: #333;
+  margin-top: 10px;
+  display: block;
+}
+
+body {
+  background-color: #f9f9f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #444;
+}
+
+.card {
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  font-weight: bold;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  font-weight: bold;
 }
