@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1 Register
+  if message
+    p(style="color: red") #{message}
+  form(action="/register", method="post")
+    div
+      label(for="username") Username:
+      input(type="text", name="username", required)
+    div
+      label(for="password") Password:
+      input(type="password", name="password", required)
+    div
+      button(type="submit") Register

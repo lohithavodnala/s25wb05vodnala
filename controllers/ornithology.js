@@ -6,7 +6,7 @@ exports.ornithology_list = async function (req, res) {
     const ornithology = await Ornithology.find();
     res.render("ornithology", {
       title: "Search Results - Ornithology",
-      ornithology
+      items: ornithology
     });
   } catch (err) {
     console.error("Error fetching ornithology list:", err);
@@ -31,12 +31,12 @@ exports.ornithology_detail = async function (req, res) {
 // POST a new expedition
 exports.ornithology_create_post = async function (req, res) {
   const expedition = new Ornithology({
-    ornithology_location: req.body.location,  // Ensure field name matches the model
+    ornithology_location: req.body.ornithology_location,
     species_spotted: req.body.species_spotted,
     duration_days: req.body.duration_days
   });
   try {
-    const result = await expedition.save(); // Save the new expedition
+    const result = await expedition.save();
     res.send(result);
   } catch (err) {
     console.error("Error creating ornithology record:", err);
@@ -52,8 +52,7 @@ exports.ornithology_update_put = async function (req, res) {
       return res.status(404).send({ error: `Ornithology record not found for ID ${req.params.id}` });
     }
 
-    // Update the fields with new data
-    if (req.body.location) toUpdate.ornithology_location = req.body.location;
+    if (req.body.ornithology_location) toUpdate.ornithology_location = req.body.ornithology_location;
     if (req.body.species_spotted) toUpdate.species_spotted = req.body.species_spotted;
     if (req.body.duration_days) toUpdate.duration_days = req.body.duration_days;
 

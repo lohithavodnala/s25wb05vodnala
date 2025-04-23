@@ -1,20 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const ornithology_controller = require("../controllers/ornithology");
+const ornithology_controllers = require("../controllers/ornithology");
 
+// A little function to check if we have an authorized user and continue on
+// or redirect to login
+const secured = (req, res, next) => {
+    if (req.user) {
+        return next();
+    }
+    res.redirect("/login");
+};
 
-console.log("TYPE:", typeof ornithology_controller.ornithology_list); // Debug line
+// Debug to ensure function is correctly imported
+console.log("TYPE:", typeof ornithology_controllers.ornithology_list); // Should print: function
 
-router.get('/', ornithology_controller.ornithology_list); // This line must point to a valid function
+// MAIN PAGE ROUTE
+router.get('/', ornithology_controllers.ornithology_list); // View all items
 
-// Additional routes
-router.get('/api/:id', ornithology_controller.ornithology_detail);
-router.post('/api', ornithology_controller.ornithology_create_post);
-router.put('/api/:id', ornithology_controller.ornithology_update_put);
-router.delete('/api/:id', ornithology_controller.ornithology_delete);
-router.get('/detail', ornithology_controller.ornithology_view_one_Page);
-router.get('/create', ornithology_controller.ornithology_create_Page);
-router.get('/update', ornithology_controller.ornithology_update_Page);
-router.get('/delete', ornithology_controller.ornithology_delete_Page);
+// API ROUTES (Used for backend CRUD)
+router.get('/api/:id', ornithology_controllers.ornithology_detail); // Get one by ID
+router.post('/api', ornithology_controllers.ornithology_create_post); // Create new
+router.put('/api/:id', ornithology_controllers.ornithology_update_put); // Update existing
+router.delete('/api/:id', ornithology_controllers.ornithology_delete); // Delete by ID
+
+// PAGE ROUTES (View pages, not JSON)
+router.get('/detail', ornithology_controllers.ornithology_view_one_Page); // Detail View Page
+router.get('/create', secured, ornithology_controllers.ornithology_create_Page); // Create View Page
+router.get('/update', secured, ornithology_controllers.ornithology_update_Page); // Update View Page
+router.get('/delete', secured, ornithology_controllers.ornithology_delete_Page); // Delete View Page
 
 module.exports = router;

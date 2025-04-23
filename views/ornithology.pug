@@ -3,25 +3,26 @@ extends layout
 block content
   h1= title
   br
-  a.btn.btn-primary(href="/ornithology/create") Create expeditions
+  a.btn.btn-primary(href="/ornithology/create") Create ornithology
   br
   div(class="container-fluid")
     div(class="row m-1")
-      each item in items
-        - let destination = "/ornithology/update?id=" + item._id
-        div(class="row-sm-2", class="m-1")
-          | Item #{item.ornithology_location}(#{item.species_spotted}) is #{item.duration_days}
-          button.btn(class="btn-primary ml-1", onclick= dispatch(destination)) Update
+      // Check if items exists and is an array with length
+      if items && items.length
+        each item, index in items
+          - let destination = "/ornithology/update?id=" + item._id
           .col-sm-4
-            h3 #{item.duration_days}
-            p Location: #{item.ornithology_location}
-            p Species: #{item.species_spotted}
-            p Duration: #{item.duration_days} days
-            div(class="buy-button", onclick=`buy(${index})`) Purchase
-            button.btn(class="btn-primary ml-1", onclick= dispatch(destination)) Update
-            button.btn.btn-success.ml-1(onclick= dispatch("/ornithology/detail?id=" + item._id)) Detail
-            button.btn.btn-warning.ml-1(onclick= dispatch("/ornithology/delete?id=" + item._id)) Delete
-            br
+            div(class="row-sm-2", class="m-1")
+              h3 #{item.duration_days}
+              p Location: #{item.ornithology_location}
+              p Species: #{item.species_spotted}
+              p Duration: #{item.duration_days} days
+              div(class="buy-button", onclick=`buy(${index})`) Purchase
+              button.btn.btn-primary.ml-1(onclick=`dispatch("${destination}")`) Update
+              button.btn.btn-success.ml-1(onclick=`dispatch("/ornithology/detail?id=${item._id}")`) Detail
+              button.btn.btn-warning.ml-1(onclick=`dispatch("/ornithology/delete?id=${item._id}")`) Delete
+      else
+        p No expeditions found.
   br
   a(href='/') Go Back to Home
 
@@ -31,5 +32,5 @@ block content
     }
 
     function dispatch(path){
-      window.location.href=path
+      window.location.href=path;
     }
